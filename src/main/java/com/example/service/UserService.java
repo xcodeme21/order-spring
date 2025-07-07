@@ -25,7 +25,7 @@ public class UserService {
     private Validator validator;
 
     @Transactional
-    public void register(RegisterUserRequest request) {
+    public User register(RegisterUserRequest request) {
         Set<ConstraintViolation<RegisterUserRequest>> constraintViolations = validator.validate(request);
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
@@ -41,5 +41,6 @@ public class UserService {
         user.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
 
         userRepository.save(user);
+        return user;
     }
 }

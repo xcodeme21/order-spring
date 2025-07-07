@@ -1,7 +1,6 @@
 package com.example.controller;
 
-import com.example.exception.ApiException;
-import com.example.model.WebResponse;
+import com.example.advice.WebResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

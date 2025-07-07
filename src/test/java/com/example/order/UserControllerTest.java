@@ -1,7 +1,7 @@
 package com.example.order;
 
 import com.example.model.RegisterUserRequest;
-import com.example.model.WebResponse;
+import com.example.advice.WebResponse;
 import com.example.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

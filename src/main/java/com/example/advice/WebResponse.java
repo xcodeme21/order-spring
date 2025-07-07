@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.advice;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class WebResponse<T> {
+    private String app_name;
+    private String build;
     private T data;
-    private String error_message;
-    private String status_code;
+    private String id;
+    private String message;
+    private String version;
 }
