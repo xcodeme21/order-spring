@@ -31,7 +31,7 @@ public class UserService {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        if(userRepository.existsById(request.getEmail())) {
+        if(userRepository.existsByEmail(request.getEmail())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
