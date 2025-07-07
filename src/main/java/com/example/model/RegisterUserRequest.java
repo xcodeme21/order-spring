@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class RegisterUserRequest {
     @NotBlank
     @Size(min = 4, max = 100)
-    private String username;
+    private String name;
 
     @NotBlank
     @Size(min = 8)
