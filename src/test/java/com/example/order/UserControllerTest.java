@@ -2,6 +2,7 @@ package com.example.order;
 
 import com.example.model.RegisterUserRequest;
 import com.example.advice.WebResponse;
+import com.example.model.UserResponse;
 import com.example.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +42,7 @@ public class UserControllerTest {
         request.setEmail("xcodeme21@gmail.com");
         request.setPassword("12345678");
         request.setName("Agus Siswanto");
+
         mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -48,11 +50,14 @@ public class UserControllerTest {
         ).andExpectAll(
                 status().isOk()
         ).andDo(result -> {
-            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<WebResponse<String>>() {
+            WebResponse<UserResponse> response = objectMapper.readValue(
+                    result.getResponse().getContentAsString(),
+                    new TypeReference<WebResponse<UserResponse>>() {}
+            );
 
-            });
-
-            assertEquals("success", response.getData());
+            assertEquals("Agus Siswanto", response.getData().getName());
+            assertEquals("xcodeme21@gmail.com", response.getData().getEmail());
         });
     }
+
 }
