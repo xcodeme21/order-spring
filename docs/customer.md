@@ -8,7 +8,7 @@
 ### Request Body
 ```json
 {
-  "full_name": "Agus Siswanto",
+  "name": "Agus Siswanto",
   "email": "xcodeme21@gmail.com",
   "password": "mypassword"
 }
@@ -18,7 +18,7 @@
 ```json
 {
   "data": {
-    "full_name": "Agus Siswanto",
+    "name": "Agus Siswanto",
     "email": "xcodeme21@gmail.com",
     "password": "mypassword"
   },
@@ -31,7 +31,7 @@
 ```json
 {
   "data": null,
-  "error_message": "Invalid request: full_name, email, and password are required.",
+  "error_message": "Invalid request: name, email, and password are required.",
   "status": 400
 }
 ```
@@ -84,7 +84,7 @@
 ### Request Body
 ```json
 {
-  "full_name": "Agus S. Wijaya",
+  "name": "Agus S. Wijaya",
   "email": "aguswijaya21@gmail.com"
 }
 ```
@@ -93,7 +93,7 @@
 ```json
 {
   "data": {
-    "full_name": "Agus S. Wijaya",
+    "name": "Agus S. Wijaya",
     "email": "aguswijaya21@gmail.com"
   },
   "error_message": null,
@@ -124,7 +124,7 @@
 ```json
 {
   "data": {
-    "full_name": "Agus Siswanto",
+    "name": "Agus Siswanto",
     "email": "xcodeme21@gmail.com"
   },
   "error_message": null,
