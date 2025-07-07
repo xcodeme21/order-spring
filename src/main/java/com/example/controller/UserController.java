@@ -19,6 +19,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ResponseHelper responseHelper;
+
     @PostMapping(path = "/api/users", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<UserResponse> register(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
         User user = userService.register(registerUserRequest);
@@ -28,6 +31,6 @@ public class UserController {
                 .name(user.getName())
                 .build();
 
-        return ResponseHelper.ok(response, "Registration successful");
+        return responseHelper.ok(response, "Registration successful");
     }
 }

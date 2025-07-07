@@ -1,29 +1,34 @@
 package com.example.advice;
 
+import org.springframework.stereotype.Component;
+
 import java.util.UUID;
 
+@Component
 public class ResponseHelper {
 
-    private static final String APP_NAME = "Order Spring";
-    private static final String BUILD = "1";
-    private static final String VERSION = "1.0.1.3";
+    private final AppProperties props;
 
-    public static <T> WebResponse<T> ok(T data, String message) {
+    public ResponseHelper(AppProperties props) {
+        this.props = props;
+    }
+
+    public <T> WebResponse<T> ok(T data, String message) {
         return WebResponse.<T>builder()
-                .app_name(APP_NAME)
-                .build(BUILD)
-                .version(VERSION)
+                .app_name(props.getAppName())
+                .build(props.getBuild())
+                .version(props.getVersion())
                 .id(UUID.randomUUID().toString())
                 .message(message)
                 .data(data)
                 .build();
     }
 
-    public static <T> WebResponse<T> error(String message) {
+    public <T> WebResponse<T> error(String message) {
         return WebResponse.<T>builder()
-                .app_name(APP_NAME)
-                .build(BUILD)
-                .version(VERSION)
+                .app_name(props.getAppName())
+                .build(props.getBuild())
+                .version(props.getVersion())
                 .id(UUID.randomUUID().toString())
                 .message(message)
                 .data(null)
