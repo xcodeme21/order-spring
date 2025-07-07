@@ -27,7 +27,7 @@ Sample `application.properties` configuration:
 ```properties
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.username=xcodeme21
-spring.datasource.password=yui678
+spring.datasource.password=xxxxx
 spring.datasource.url=jdbc:mysql://localhost:3306/order_spring
 spring.datasource.type=com.zaxxer.hikari.HikariDataSource
 spring.datasource.hikari.minimum-idle=10
