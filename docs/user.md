@@ -1,11 +1,25 @@
+# 📘 User API Specification
 
-# User API Spec
+Semua response mengikuti struktur berikut:
 
-## Register User
+```json
+{
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "<uuid>",
+  "message": "<message>",
+  "data": <object/null>
+}
+```
+
+---
+
+## 🚀 Register User
 
 - **Endpoint**: `POST /api/auth/register`
 
-### Request Body
+### 🔸 Request Body
 ```json
 {
   "name": "Agus Siswanto",
@@ -14,35 +28,40 @@
 }
 ```
 
-### Success Response
+### ✅ Success Response
 ```json
 {
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Registration successful",
   "data": {
     "name": "Agus Siswanto",
-    "email": "xcodeme21@gmail.com",
-    "password": "mypassword"
-  },
-  "error_message": null,
-  "status": 200
+    "email": "xcodeme21@gmail.com"
+  }
 }
 ```
 
-### Failed Response
+### ❌ Failed Response
 ```json
 {
-  "data": null,
-  "error_message": "Invalid request: name, email, and password are required.",
-  "status": 400
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Email already exists",
+  "data": null
 }
 ```
 
 ---
 
-## Login User
+## 🔐 Login User
 
 - **Endpoint**: `POST /api/auth/login`
 
-### Request Body
+### 🔸 Request Body
 ```json
 {
   "email": "xcodeme21@gmail.com",
@@ -50,30 +69,36 @@
 }
 ```
 
-### Success Response
+### ✅ Success Response
 ```json
 {
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Login successful",
   "data": {
     "token": "TOKEN",
     "expired_at": 1751824200
-  },
-  "error_message": null,
-  "status": 200
+  }
 }
 ```
 
-### Failed Response
+### ❌ Failed Response
 ```json
 {
-  "data": null,
-  "error_message": "Incorrect password. Please try again.",
-  "status": 401
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Incorrect password. Please try again.",
+  "data": null
 }
 ```
 
 ---
 
-## Update User
+## ✏️ Update User
 
 - **Endpoint**: `PUT /api/auth/update`
 - **Headers**:
@@ -81,7 +106,7 @@
   Authorization: Bearer <token>
   ```
 
-### Request Body
+### 🔸 Request Body
 ```json
 {
   "name": "Agus Siswanto",
@@ -89,30 +114,36 @@
 }
 ```
 
-### Success Response
+### ✅ Success Response
 ```json
 {
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Profile updated successfully",
   "data": {
     "name": "Agus Siswanto",
     "email": "xcodeme21@gmail.com"
-  },
-  "error_message": null,
-  "status": 200
+  }
 }
 ```
 
-### Failed Response
+### ❌ Failed Response
 ```json
 {
-  "data": null,
-  "error_message": "Invalid or missing Bearer token. Please authenticate to update profile.",
-  "status": 401
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Invalid or missing Bearer token. Please authenticate.",
+  "data": null
 }
 ```
 
 ---
 
-## Get User
+## 👤 Get User Profile
 
 - **Endpoint**: `GET /api/auth/profile`
 - **Headers**:
@@ -120,30 +151,36 @@
   Authorization: Bearer <token>
   ```
 
-### Success Response
+### ✅ Success Response
 ```json
 {
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Profile fetched successfully",
   "data": {
     "name": "Agus Siswanto",
     "email": "xcodeme21@gmail.com"
-  },
-  "error_message": null,
-  "status": 200
+  }
 }
 ```
 
-### Failed Response
+### ❌ Failed Response
 ```json
 {
-  "data": null,
-  "error_message": "Invalid or missing Bearer token. Please authenticate to access this resource.",
-  "status": 401
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Token is invalid or expired.",
+  "data": null
 }
 ```
 
 ---
 
-## Logout User
+## 🚪 Logout User
 
 - **Endpoint**: `POST /api/auth/logout`
 - **Headers**:
@@ -151,23 +188,29 @@
   Authorization: Bearer <token>
   ```
 
-### Success Response
+### ✅ Success Response
 ```json
 {
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Logout successful. Token invalidated.",
   "data": {
-    "message": "Logout successful. Token has been invalidated."
-  },
-  "error_message": null,
-  "status": 200
+    "message": "Logged out"
+  }
 }
 ```
 
-### Failed Response
+### ❌ Failed Response
 ```json
 {
-  "data": null,
-  "error_message": "Token is invalid or has already been logged out.",
-  "status": 401
+  "app_name": "Order Spring",
+  "build": "1",
+  "version": "1.0.1.3",
+  "id": "uuid",
+  "message": "Token is invalid or already logged out.",
+  "data": null
 }
 ```
 
