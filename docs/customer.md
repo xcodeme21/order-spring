@@ -84,8 +84,8 @@
 ### Request Body
 ```json
 {
-  "name": "Agus S. Wijaya",
-  "email": "aguswijaya21@gmail.com"
+  "name": "Agus Siswanto",
+  "email": "xcodeme21@gmail.com"
 }
 ```
 
@@ -93,8 +93,8 @@
 ```json
 {
   "data": {
-    "name": "Agus S. Wijaya",
-    "email": "aguswijaya21@gmail.com"
+    "name": "Agus Siswanto",
+    "email": "xcodeme21@gmail.com"
   },
   "error_message": null,
   "status": 200
