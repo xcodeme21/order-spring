@@ -1,7 +1,7 @@
 
-# Customer API Spec
+# User API Spec
 
-## Register Customer
+## Register User
 
 - **Endpoint**: `POST /api/auth/register`
 
@@ -38,7 +38,7 @@
 
 ---
 
-## Login Customer
+## Login User
 
 - **Endpoint**: `POST /api/auth/login`
 
@@ -73,7 +73,7 @@
 
 ---
 
-## Update Customer
+## Update User
 
 - **Endpoint**: `PUT /api/auth/update`
 - **Headers**:
@@ -112,7 +112,7 @@
 
 ---
 
-## Get Customer
+## Get User
 
 - **Endpoint**: `GET /api/auth/profile`
 - **Headers**:
@@ -143,7 +143,7 @@
 
 ---
 
-## Logout Customer
+## Logout User
 
 - **Endpoint**: `POST /api/auth/logout`
 - **Headers**:
