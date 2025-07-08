@@ -36,26 +36,23 @@ public class LoginService {
     
     @Transactional
     public UserTokenResponse login (LoginRequest request) {
-        System.out.println("Login request progress validation");
         Set<ConstraintViolation<LoginRequest>> constraintViolations = validator.validate(request);
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        System.out.println(request.getEmail());
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or password wrong"));
-        System.out.println("user passed");
 
         if(BCrypt.checkpw(request.getPassword(), user.getPassword())) {
+            userTokenRepository.deleteByUserId(user.getId());
+
             UserToken token = new UserToken();
             token.setToken(UUID.randomUUID().toString());
             token.setExpiredAt(TimeUtil.expiredTime());
             token.setUser(user);
 
-            System.out.println("Saving token...");
             userTokenRepository.save(token);
-            System.out.println("Token saved.");
 
             return UserTokenResponse.builder()
                     .token(token.getToken())
@@ -63,6 +60,7 @@ public class LoginService {
                             .atZone(ZoneId.systemDefault())
                             .toLocalDateTime()
                     )
+                    .user_id(token.getUser().getId())
                     .build();
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or password wrong");

@@ -29,6 +29,7 @@ public class LoginController {
                 UserTokenResponse response = UserTokenResponse.builder()
                         .token(userToken.getToken())
                         .expired_at(userToken.getExpired_at())
+                        .user_id(userToken.getUser_id())
                         .build();
 
         return responseHelper.ok(response, "Login successful");
