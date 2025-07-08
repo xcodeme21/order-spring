@@ -55,9 +55,6 @@ public class ProfileController {
         }
 
         User user = tokenService.getUserByToken(token);
-        System.out.println("Ini adalah data user");
-        System.out.println(user);
-
         profileService.logout(user);
         return responseHelper.ok(null, "Successfully logged out");
     }
