@@ -2,8 +2,11 @@ package com.example.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -23,11 +26,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseHelper.error(message), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<WebResponse<String>> handleGeneric(Exception ex) {
-        return new ResponseEntity<>(responseHelper.error("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<WebResponse<String>> handleResponseStatus(ResponseStatusException e) {
         return ResponseEntity
@@ -35,4 +33,23 @@ public class GlobalExceptionHandler {
                 .body(responseHelper.error(e.getReason()));
     }
 
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<WebResponse<String>> handleNotFound(NoHandlerFoundException ex) {
+        return new ResponseEntity<>(responseHelper.error("Endpoint not found"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<WebResponse<String>> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex) {
+        return new ResponseEntity<>(responseHelper.error("Method not allowed"), HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<WebResponse<String>> handleUnsupportedMediaType(HttpMediaTypeNotSupportedException ex) {
+        return new ResponseEntity<>(responseHelper.error("Unsupported media type"), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<WebResponse<String>> handleGeneric(Exception ex) {
+        return new ResponseEntity<>(responseHelper.error("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

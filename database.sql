@@ -26,3 +26,13 @@ CREATE TABLE user_tokens
 SELECT * FROM users;
 
 DESC users;
+
+CREATE TABLE products
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    product_description TEXT NOT NULL,
+    price BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE InnoDB;
