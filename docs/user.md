@@ -37,8 +37,11 @@ Semua response mengikuti struktur berikut:
   "id": "uuid",
   "message": "Registration successful",
   "data": {
+    "id" : 1,
     "name": "Agus Siswanto",
-    "email": "xcodeme21@gmail.com"
+    "email": "xcodeme21@gmail.com",
+    "created_at": "2025-07-08T15:29:21",
+    "updated_at": "2025-07-08T15:29:21"
   }
 }
 ```
@@ -78,6 +81,7 @@ Semua response mengikuti struktur berikut:
   "id": "uuid",
   "message": "Login successful",
   "data": {
+    "user_id": 1,
     "token": "TOKEN",
     "expired_at": 1751824200
   }
@@ -91,7 +95,7 @@ Semua response mengikuti struktur berikut:
   "build": "1",
   "version": "1.0.1.3",
   "id": "uuid",
-  "message": "Incorrect password. Please try again.",
+  "message": "Email or password wrong",
   "data": null
 }
 ```
@@ -145,7 +149,7 @@ Semua response mengikuti struktur berikut:
 
 ## 👤 Get User Profile
 
-- **Endpoint**: `GET /api/auth/profile`
+- **Endpoint**: `GET /api/profile`
 - **Headers**:
   ```
   Authorization: Bearer <token>
@@ -160,8 +164,11 @@ Semua response mengikuti struktur berikut:
   "id": "uuid",
   "message": "Profile fetched successfully",
   "data": {
+    "id" : 1,
     "name": "Agus Siswanto",
-    "email": "xcodeme21@gmail.com"
+    "email": "xcodeme21@gmail.com",
+    "created_at": "2025-07-08T15:29:21",
+    "updated_at": "2025-07-08T15:29:21"
   }
 }
 ```
