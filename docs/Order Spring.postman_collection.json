@@ -1,14 +1,14 @@
 {
 	"info": {
 		"_postman_id": "c092687f-190b-4f9e-a48b-4641c0037b3d",
-		"name": "Order Spring",
+		"name": "Order",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "11944825",
 		"_collection_link": "https://sobat-ambyar.postman.co/workspace/My-Workspace~bcc72038-83e6-4a0e-8c2d-d0796b8e8d3c/collection/11944825-c092687f-190b-4f9e-a48b-4641c0037b3d?action=share&source=collection_link&creator=11944825"
 	},
 	"item": [
 		{
-			"name": "Users",
+			"name": "Auth",
 			"item": [
 				{
 					"name": "Register",
@@ -28,7 +28,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\" : \"Agus Siswanto\",\n    \"email\" : \"xcodeme21@gmail.ssss\",\n    \"password\" : \"12345678sss\"\n}",
+							"raw": "{\n    \"name\" : \"Agus Siswanto\",\n    \"email\" : \"xcodeme21@gmail.com\",\n    \"password\" : \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -36,13 +36,160 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/users",
+							"raw": "{{host}}/api/auth/register",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"users"
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"xcodeme21@gmail.com\",\n    \"password\" : \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "akhdahdjad",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profile",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "akhdahdjad",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profile",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profile"
 							]
 						}
 					},
