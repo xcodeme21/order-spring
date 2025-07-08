@@ -3,7 +3,7 @@ package com.example.order;
 import com.example.model.RegisterUserRequest;
 import com.example.advice.WebResponse;
 import com.example.model.UserResponse;
-import com.example.repository.UserRepository;
+import com.example.repository.RegisterRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,20 +20,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class RegisterControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private RegisterRepository registerRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
-        userRepository.deleteAll();
+        registerRepository.deleteAll();
     }
 
     @Test

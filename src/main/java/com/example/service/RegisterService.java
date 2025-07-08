@@ -2,7 +2,7 @@ package com.example.service;
 
 import com.example.entity.User;
 import com.example.model.RegisterUserRequest;
-import com.example.repository.UserRepository;
+import com.example.repository.RegisterRepository;
 import com.example.utils.BCrypt;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -16,10 +16,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Set;
 
 @Service
-public class UserService {
+public class RegisterService {
 
     @Autowired
-    private UserRepository userRepository;
+    private RegisterRepository registerRepository;
 
     @Autowired
     private Validator validator;
@@ -31,7 +31,7 @@ public class UserService {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        if(userRepository.existsByEmail(request.getEmail())) {
+        if(registerRepository.existsByEmail(request.getEmail())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
@@ -40,7 +40,7 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
 
-        userRepository.save(user);
+        registerRepository.save(user);
         return user;
     }
 }
