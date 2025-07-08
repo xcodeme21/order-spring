@@ -6,7 +6,8 @@ Created by Agus Siswanto
 - Spring Web
 - Spring Data JPA
 - MySQL Driver
-- Validation
+- Jakarta Validation
+- JWT
 
 ## Requirements
 
