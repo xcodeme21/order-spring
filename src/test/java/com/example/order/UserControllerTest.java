@@ -43,7 +43,7 @@ public class UserControllerTest {
         request.setPassword("12345678");
         request.setName("Agus Siswanto");
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/auth/register")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))

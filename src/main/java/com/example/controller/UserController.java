@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private ResponseHelper responseHelper;
 
-    @PostMapping(path = "/api/users", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/api/auth/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<UserResponse> register(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
         User user = userService.register(registerUserRequest);
 
