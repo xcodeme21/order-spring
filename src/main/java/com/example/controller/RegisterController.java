@@ -27,8 +27,11 @@ public class RegisterController {
         User user = registerService.register(registerRequest);
 
         UserResponse response = UserResponse.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
+                .created_at(user.getCreatedAt())
+                .updated_at(user.getUpdatedAt())
                 .build();
 
         return responseHelper.ok(response, "Registration successful");

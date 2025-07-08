@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 @Service
@@ -39,6 +41,8 @@ public class RegisterService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
 
         userRepository.save(user);
         return user;

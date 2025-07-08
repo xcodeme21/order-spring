@@ -7,6 +7,7 @@ import com.example.model.UserTokenResponse;
 import com.example.repository.UserRepository;
 import com.example.repository.UserTokenRepository;
 import com.example.utils.BCrypt;
+import com.example.utils.JwtUtil;
 import com.example.utils.TimeUtil;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -24,16 +25,19 @@ import java.util.UUID;
 
 @Service
 public class LoginService {
-    
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserTokenRepository userTokenRepository;
-    
+
     @Autowired
     private Validator validator;
-    
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @Transactional
     public UserTokenResponse login (LoginRequest request) {
         Set<ConstraintViolation<LoginRequest>> constraintViolations = validator.validate(request);
@@ -46,10 +50,12 @@ public class LoginService {
 
         if(BCrypt.checkpw(request.getPassword(), user.getPassword())) {
             userTokenRepository.deleteByUserId(user.getId());
+            long expirationMillis = TimeUtil.expiredTime();
+            String jwt = jwtUtil.generateToken(user.getId(), expirationMillis);
 
             UserToken token = new UserToken();
-            token.setToken(UUID.randomUUID().toString());
-            token.setExpiredAt(TimeUtil.expiredTime());
+            token.setToken(jwt);
+            token.setExpiredAt(System.currentTimeMillis() + expirationMillis);
             token.setUser(user);
 
             userTokenRepository.save(token);
@@ -66,6 +72,6 @@ public class LoginService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or password wrong");
         }
     }
-    
-    
+
+
 }
