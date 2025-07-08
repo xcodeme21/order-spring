@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_tokens")
-public class UserTokens {
+public class UserToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +22,5 @@ public class UserTokens {
 
     private String token;
 
-    private LocalDateTime expiredAt;
+    private Long expiredAt;
 }

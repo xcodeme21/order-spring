@@ -1,8 +1,8 @@
 package com.example.service;
 
 import com.example.entity.User;
-import com.example.model.RegisterUserRequest;
-import com.example.repository.RegisterRepository;
+import com.example.model.RegisterRequest;
+import com.example.repository.UserRepository;
 import com.example.utils.BCrypt;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -19,19 +19,19 @@ import java.util.Set;
 public class RegisterService {
 
     @Autowired
-    private RegisterRepository registerRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private Validator validator;
 
     @Transactional
-    public User register(RegisterUserRequest request) {
-        Set<ConstraintViolation<RegisterUserRequest>> constraintViolations = validator.validate(request);
+    public User register(RegisterRequest request) {
+        Set<ConstraintViolation<RegisterRequest>> constraintViolations = validator.validate(request);
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        if(registerRepository.existsByEmail(request.getEmail())) {
+        if(userRepository.existsByEmail(request.getEmail())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
@@ -40,7 +40,7 @@ public class RegisterService {
         user.setEmail(request.getEmail());
         user.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
 
-        registerRepository.save(user);
+        userRepository.save(user);
         return user;
     }
 }

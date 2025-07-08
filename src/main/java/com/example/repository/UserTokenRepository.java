@@ -1,10 +1,9 @@
 package com.example.repository;
 
-import com.example.entity.User;
+import com.example.entity.UserToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RegisterRepository extends JpaRepository<User, String> {
-    boolean existsByEmail(String email);
+public interface UserTokenRepository extends JpaRepository<UserToken, String> {
 }

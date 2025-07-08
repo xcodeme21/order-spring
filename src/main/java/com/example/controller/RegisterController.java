@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.entity.User;
-import com.example.model.RegisterUserRequest;
+import com.example.model.RegisterRequest;
 import com.example.model.UserResponse;
 import com.example.advice.WebResponse;
 import com.example.service.RegisterService;
@@ -23,8 +23,8 @@ public class RegisterController {
     private ResponseHelper responseHelper;
 
     @PostMapping(path = "/api/auth/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<UserResponse> register(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
-        User user = registerService.register(registerUserRequest);
+    public WebResponse<UserResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
+        User user = registerService.register(registerRequest);
 
         UserResponse response = UserResponse.builder()
                 .email(user.getEmail())

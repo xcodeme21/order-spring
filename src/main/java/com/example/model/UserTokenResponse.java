@@ -4,11 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class UserTokensResponse {
+public class UserTokenResponse {
     private String token;
     private Integer user_id;
-    private BigInteger expired_at;
+    private LocalDateTime expired_at;
 }

@@ -1,9 +1,9 @@
 package com.example.order;
 
-import com.example.model.RegisterUserRequest;
+import com.example.model.RegisterRequest;
 import com.example.advice.WebResponse;
 import com.example.model.UserResponse;
-import com.example.repository.RegisterRepository;
+import com.example.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,19 +26,19 @@ public class RegisterControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private RegisterRepository registerRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
-        registerRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     void testRegisterSuccess() throws Exception {
-        RegisterUserRequest request = new RegisterUserRequest();
+        RegisterRequest request = new RegisterRequest();
         request.setEmail("xcodeme21@gmail.com");
         request.setPassword("12345678");
         request.setName("Agus Siswanto");
