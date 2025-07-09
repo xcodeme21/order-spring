@@ -19,10 +19,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100)
+    @Column(name = "product_name", length = 100)
     private String productName;
 
-    @Lob
+    @Column(name = "product_description")
     private String productDescription;
 
     private Long price;

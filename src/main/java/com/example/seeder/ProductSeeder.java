@@ -1,21 +1,20 @@
 package com.example.seeder;
 
 import com.example.entity.Product;
-import com.example.repository.ProductSeederepository;
+import com.example.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component
 public class ProductSeeder implements CommandLineRunner {
 
-    private final ProductSeederepository productRepository;
+    private final ProductRepository productRepository;
 
-    public ProductSeeder(ProductSeederepository productRepository) {
+    public ProductSeeder(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
