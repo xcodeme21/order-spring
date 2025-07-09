@@ -29,4 +29,8 @@ public class ProductService {
         Collections.reverse(list);
         return list;
     }
+
+    public Product getById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
 }

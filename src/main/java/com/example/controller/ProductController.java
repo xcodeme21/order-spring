@@ -3,17 +3,13 @@ package com.example.controller;
 import com.example.advice.ResponseHelper;
 import com.example.advice.WebResponse;
 import com.example.entity.Product;
-import com.example.entity.User;
 import com.example.model.ProductResponse;
 import com.example.service.ProductService;
 import com.example.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -71,5 +67,38 @@ public class ProductController {
                 .collect(Collectors.toList());
 
         return responseHelper.ok(responseList, "Successfully get data products");
+    }
+
+    @GetMapping(value = "/api/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WebResponse<ProductResponse> getProductById(
+            @PathVariable("id") Long id,
+            @RequestHeader("Authorization") String authHeader) {
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
+        }
+
+        String token = authHeader.replace("Bearer", "").trim();
+        if (token.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token cannot be empty");
+        }
+
+        tokenService.getUserByToken(token);
+
+        Product product = productService.getById(id);
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+
+        ProductResponse response = ProductResponse.builder()
+                .id(product.getId())
+                .product_name(product.getProductName())
+                .product_description(product.getProductDescription())
+                .price(product.getPrice())
+                .created_at(product.getCreatedAt())
+                .updated_at(product.getUpdatedAt())
+                .build();
+
+        return responseHelper.ok(response, "Successfully get data product");
     }
 }
