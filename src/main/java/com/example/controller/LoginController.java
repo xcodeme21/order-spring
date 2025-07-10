@@ -24,13 +24,7 @@ public class LoginController {
 
     @PostMapping(value = "/api/auth/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<UserTokenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        UserTokenResponse userToken = loginService.login(loginRequest);
-
-                UserTokenResponse response = UserTokenResponse.builder()
-                        .token(userToken.getToken())
-                        .expired_at(userToken.getExpired_at())
-                        .user_id(userToken.getUser_id())
-                        .build();
+        UserTokenResponse response = loginService.login(loginRequest);
 
         return responseHelper.ok(response, "Login successful");
 
