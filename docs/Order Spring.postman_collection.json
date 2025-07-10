@@ -201,16 +201,6 @@
 				{
 					"name": "Get List",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -223,11 +213,11 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "••••••"
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzUyMTM0MDc2LCJleHAiOjM1MDQzNTQ1NTJ9.5PRiaO5AJqKD1ZID6dv63wZnU_3PIXmcDpj2kv8tqAo"
 							}
 						],
 						"url": {
-							"raw": "{{host}}/api/products?next=2&provious=1",
+							"raw": "{{host}}/api/products?limit=10&cursor=2&direction=next",
 							"host": [
 								"{{host}}"
 							],
@@ -238,16 +228,15 @@
 							"query": [
 								{
 									"key": "limit",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								},
 								{
-									"key": "next",
+									"key": "cursor",
 									"value": "2"
 								},
 								{
-									"key": "provious",
-									"value": "1"
+									"key": "direction",
+									"value": "next"
 								}
 							]
 						}
