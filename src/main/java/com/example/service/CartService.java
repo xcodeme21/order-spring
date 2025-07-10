@@ -73,19 +73,20 @@ public class CartService {
     }
 
     @Transactional
-    public CartResponse deleteById(Long id, Long userId) {
-        Cart cart = cartRepository.findByIdAndUserId(id, userId)
+    public void deleteById(Long id, Long userId) {
+        cartRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found or does not belong to user"));
 
         cartRepository.deleteByIdAndUserId(id, userId);
+    }
+    @Transactional
+    public void deleteAllCarts(Long userId) {
+        List<Cart> carts = cartRepository.findByUserId(userId);
 
-        return CartResponse.builder()
-                .id(cart.getId())
-                .user_id(cart.getUser().getId())
-                .product_id(cart.getProduct().getId())
-                .qty(cart.getQty())
-                .created_at(cart.getCreatedAt())
-                .updated_at(cart.getUpdatedAt())
-                .build();
+        if (carts.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No carts found for this user");
+        }
+
+        cartRepository.deleteByUserId(userId);
     }
 }
