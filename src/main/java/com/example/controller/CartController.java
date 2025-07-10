@@ -8,12 +8,11 @@ import com.example.model.AddToCartRequest;
 import com.example.model.CartResponse;
 import com.example.service.CartService;
 import com.example.service.TokenService;
+import com.example.utils.AuthUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,19 +29,13 @@ public class CartController {
     @Autowired
     private ResponseHelper responseHelper;
 
+    @Autowired
+    private AuthUtil authUtil;
+
 
     @GetMapping(value = "/api/carts", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<List<CartResponse>> getCart(@RequestHeader("Authorization") String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
-        }
-
-        String token = authHeader.replace("Bearer", "").trim();
-        if (token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token cannot be empty");
-        }
-
-        User user = tokenService.getUserByToken(token);
+        User user = authUtil.getUserFromAuth(authHeader);
 
         List<Cart> carts = cartService.getCartByUserId(user.getId());
 
@@ -62,16 +55,8 @@ public class CartController {
 
     @PostMapping(value = "/api/carts", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<CartResponse> addToCart(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody AddToCartRequest addToCartRequest) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
-        }
+        authUtil.getUserFromAuth(authHeader);
 
-        String token = authHeader.replace("Bearer", "").trim();
-        if (token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token cannot be empty");
-        }
-
-        tokenService.getUserByToken(token);
         CartResponse response = cartService.addToCart(addToCartRequest);
         return responseHelper.ok(response, "Successfully inserted cart");
     }
@@ -80,17 +65,7 @@ public class CartController {
     public WebResponse<String> deleteCartById(
             @PathVariable("id") Long id,
             @RequestHeader("Authorization") String authHeader) {
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
-        }
-
-        String token = authHeader.replace("Bearer", "").trim();
-        if (token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token cannot be empty");
-        }
-
-        User user = tokenService.getUserByToken(token);
+        User user = authUtil.getUserFromAuth(authHeader);
 
         cartService.deleteById(id, user.getId());
         return responseHelper.ok(null, "Successfully deleted item cart");
@@ -98,16 +73,7 @@ public class CartController {
 
     @DeleteMapping(value = "/api/carts/delete-all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<String> deleteAllCarts(@RequestHeader("Authorization") String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
-        }
-
-        String token = authHeader.replace("Bearer", "").trim();
-        if (token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token cannot be empty");
-        }
-
-        User user = tokenService.getUserByToken(token);
+        User user = authUtil.getUserFromAuth(authHeader);
 
         cartService.deleteAllCarts(user.getId());
         return responseHelper.ok(null, "Successfully deleted all cart items");

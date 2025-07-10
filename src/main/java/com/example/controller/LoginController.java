@@ -2,7 +2,6 @@ package com.example.controller;
 
 import com.example.advice.ResponseHelper;
 import com.example.advice.WebResponse;
-import com.example.entity.UserToken;
 import com.example.model.LoginRequest;
 import com.example.model.UserTokenResponse;
 import com.example.service.LoginService;

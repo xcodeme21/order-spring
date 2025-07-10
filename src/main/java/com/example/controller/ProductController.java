@@ -7,6 +7,7 @@ import com.example.model.ItemsProductResponse;
 import com.example.model.ProductResponse;
 import com.example.service.ProductService;
 import com.example.service.TokenService;
+import com.example.utils.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,21 +30,15 @@ public class ProductController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private AuthUtil authUtil;
+
     @GetMapping(value = "/api/products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<ItemsProductResponse> getProduct(@RequestHeader("Authorization") String authHeader,
                                                         @RequestParam(value = "next", required = false) Long nextId,
                                                         @RequestParam(value = "previous", required = false) Long previousId,
                                                         @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
-        }
-
-        String token = authHeader.replace("Bearer", "").trim();
-        if (token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token cannot be empty");
-        }
-
-        tokenService.getUserByToken(token);
+        authUtil.getUserFromAuth(authHeader);
 
         if (limit > 100) limit = 100;
         if (limit <= 0) limit = 10;
@@ -96,17 +91,7 @@ public class ProductController {
     public WebResponse<ProductResponse> getProductById(
             @PathVariable("id") Long id,
             @RequestHeader("Authorization") String authHeader) {
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
-        }
-
-        String token = authHeader.replace("Bearer", "").trim();
-        if (token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token cannot be empty");
-        }
-
-        tokenService.getUserByToken(token);
+        authUtil.getUserFromAuth(authHeader);
 
         Product product = productService.getById(id);
         if (product == null) {
