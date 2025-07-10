@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.advice.ResponseHelper;
 import com.example.advice.WebResponse;
 import com.example.entity.Product;
+import com.example.model.ItemsProductResponse;
 import com.example.model.ProductResponse;
 import com.example.service.ProductService;
 import com.example.service.TokenService;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,10 +30,10 @@ public class ProductController {
     private TokenService tokenService;
 
     @GetMapping(value = "/api/products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<List<ProductResponse>> getProduct(@RequestHeader("Authorization") String authHeader,
-                                                   @RequestParam(value = "next", required = false) Long nextId,
-                                                   @RequestParam(value = "previous", required = false) Long previousId,
-                                                   @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit) {
+    public WebResponse<ItemsProductResponse> getProduct(@RequestHeader("Authorization") String authHeader,
+                                                        @RequestParam(value = "next", required = false) Long nextId,
+                                                        @RequestParam(value = "previous", required = false) Long previousId,
+                                                        @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
         }
@@ -47,12 +49,19 @@ public class ProductController {
         if (limit <= 0) limit = 10;
 
         List<Product> products;
+        boolean isPrevious = false;
+
         if (nextId != null) {
             products = productService.getNextPage(nextId, limit);
         } else if (previousId != null) {
             products = productService.getPreviousPage(previousId, limit);
+            isPrevious = true;
         } else {
             products = productService.getFirstPage(limit);
+        }
+
+        if (isPrevious) {
+            Collections.reverse(products);
         }
 
         List<ProductResponse> responseList = products.stream()
@@ -66,7 +75,21 @@ public class ProductController {
                         .build())
                 .collect(Collectors.toList());
 
-        return responseHelper.ok(responseList, "Successfully get data products");
+        Integer newNextId = null;
+        Integer newPreviousId = null;
+
+        if (!products.isEmpty()) {
+            newPreviousId = Math.toIntExact(products.get(0).getId());
+            newNextId = Math.toIntExact(products.get(products.size() - 1).getId());
+        }
+
+        ItemsProductResponse itemsProductResponse = ItemsProductResponse.builder()
+                .items(responseList)
+                .previous(newPreviousId)
+                .next(newNextId)
+                .build();
+
+        return responseHelper.ok(itemsProductResponse, "Successfully get data products");
     }
 
     @GetMapping(value = "/api/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
