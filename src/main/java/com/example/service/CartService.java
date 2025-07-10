@@ -14,7 +14,9 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,16 +48,11 @@ public class CartService {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        System.out.println("berhasil validasi");
-
         User user = userRepository.findById(request.getUser_id())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        System.out.println("berhasil get user");
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
 
         Product product = productRepository.findById(request.getProduct_id())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        System.out.println("berhasil get product");
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product not found"));
 
         Cart cart = new Cart();
         cart.setUser(user);
@@ -65,7 +62,6 @@ public class CartService {
         cart.setUpdatedAt(LocalDateTime.now());
 
         Cart savedCart = cartRepository.save(cart);
-        System.out.println("berhasil atc");
 
         return CartResponse.builder()
                 .id(savedCart.getId())
