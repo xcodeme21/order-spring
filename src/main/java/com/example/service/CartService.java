@@ -5,7 +5,6 @@ import com.example.entity.Product;
 import com.example.entity.User;
 import com.example.model.AddToCartRequest;
 import com.example.model.CartResponse;
-import com.example.model.LoginRequest;
 import com.example.repository.CartRepository;
 import com.example.repository.ProductRepository;
 import com.example.repository.UserRepository;
@@ -70,6 +69,23 @@ public class CartService {
                 .qty(savedCart.getQty())
                 .created_at(savedCart.getCreatedAt())
                 .updated_at(savedCart.getUpdatedAt())
+                .build();
+    }
+
+    @Transactional
+    public CartResponse deleteById(Long id, Long userId) {
+        Cart cart = cartRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found or does not belong to user"));
+
+        cartRepository.deleteByIdAndUserId(id, userId);
+
+        return CartResponse.builder()
+                .id(cart.getId())
+                .user_id(cart.getUser().getId())
+                .product_id(cart.getProduct().getId())
+                .qty(cart.getQty())
+                .created_at(cart.getCreatedAt())
+                .updated_at(cart.getUpdatedAt())
                 .build();
     }
 }

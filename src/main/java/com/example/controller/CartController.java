@@ -76,5 +76,25 @@ public class CartController {
         return responseHelper.ok(response, "Successfully inserted cart");
     }
 
+    @DeleteMapping(value = "/api/carts/delete/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public WebResponse<CartResponse> deleteCartById(
+            @PathVariable("id") Long id,
+            @RequestHeader("Authorization") String authHeader) {
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must be provided and start with 'Bearer '");
+        }
+
+        String token = authHeader.replace("Bearer", "").trim();
+        if (token.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token cannot be empty");
+        }
+
+        User user = tokenService.getUserByToken(token);
+
+        CartResponse deleted = cartService.deleteById(id, user.getId());
+        return responseHelper.ok(deleted, "Successfully deleted item cart");
+    }
+
 
 }
