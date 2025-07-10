@@ -33,30 +33,25 @@ public class ProductController {
     @Autowired
     private AuthUtil authUtil;
 
-    @GetMapping(value = "/api/products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<ItemsProductResponse> getProduct(@RequestHeader("Authorization") String authHeader,
-                                                        @RequestParam(value = "next", required = false) Long nextId,
-                                                        @RequestParam(value = "previous", required = false) Long previousId,
-                                                        @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit) {
+    @GetMapping(value = "/api/products", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WebResponse<ItemsProductResponse> getProduct(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam(value = "cursor", required = false) Long cursor,
+            @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
+            @RequestParam(value = "direction", required = false, defaultValue = "next") String direction) {
+
         authUtil.getUserFromAuth(authHeader);
 
-        if (limit > 100) limit = 100;
         if (limit <= 0) limit = 10;
+        if (limit > 100) limit = 100;
 
         List<Product> products;
-        boolean isPrevious = false;
-
-        if (nextId != null) {
-            products = productService.getNextPage(nextId, limit);
-        } else if (previousId != null) {
-            products = productService.getPreviousPage(previousId, limit);
-            isPrevious = true;
-        } else {
+        if (cursor == null) {
             products = productService.getFirstPage(limit);
-        }
-
-        if (isPrevious) {
-            Collections.reverse(products);
+        } else if ("previous".equalsIgnoreCase(direction)) {
+            products = productService.getPreviousPage(cursor, limit);
+        } else {
+            products = productService.getNextPage(cursor, limit);
         }
 
         List<ProductResponse> responseList = products.stream()
@@ -70,21 +65,21 @@ public class ProductController {
                         .build())
                 .collect(Collectors.toList());
 
-        Integer newNextId = null;
-        Integer newPreviousId = null;
+        Integer newPrevious = null;
+        Integer newNext = null;
 
         if (!products.isEmpty()) {
-            newPreviousId = Math.toIntExact(products.get(0).getId());
-            newNextId = Math.toIntExact(products.get(products.size() - 1).getId());
+            newPrevious = Math.toIntExact(products.get(0).getId());
+            newNext = Math.toIntExact(products.get(products.size() - 1).getId());
         }
 
-        ItemsProductResponse itemsProductResponse = ItemsProductResponse.builder()
+        ItemsProductResponse items = ItemsProductResponse.builder()
                 .items(responseList)
-                .previous(newPreviousId)
-                .next(newNextId)
+                .previous(newPrevious)
+                .next(newNext)
                 .build();
 
-        return responseHelper.ok(itemsProductResponse, "Successfully get data products");
+        return responseHelper.ok(items, "Successfully get products");
     }
 
     @GetMapping(value = "/api/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

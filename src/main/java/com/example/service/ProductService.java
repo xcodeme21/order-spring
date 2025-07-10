@@ -16,18 +16,16 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    public List<Product> getPreviousPage(Long cursorId, int limit) {
+        return productRepository.findPreviousPage(cursorId, PageRequest.of(0, limit));
+    }
+
+    public List<Product> getNextPage(Long cursorId, int limit) {
+        return productRepository.findNextPage(cursorId, PageRequest.of(0, limit));
+    }
+
     public List<Product> getFirstPage(int limit) {
         return productRepository.findFirstPage(PageRequest.of(0, limit));
-    }
-
-    public List<Product> getNextPage(Long id, int limit) {
-        return productRepository.findNextPage(id, PageRequest.of(0, limit));
-    }
-
-    public List<Product> getPreviousPage(Long id, int limit) {
-        List<Product> list = productRepository.findPreviousPage(id, PageRequest.of(0, limit));
-        Collections.reverse(list);
-        return list;
     }
 
     public Product getById(Long id) {

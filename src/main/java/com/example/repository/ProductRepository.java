@@ -16,4 +16,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.id < :id ORDER BY p.id DESC")
     List<Product> findPreviousPage(@Param("id") Long id, Pageable pageable);
+
 }
